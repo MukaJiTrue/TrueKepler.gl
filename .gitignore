@@ -1,0 +1,17 @@
+node_modules/
+*/**/node_modules/
+coverage/
+.nyc_output/
+dist/
+
+*/**/yarn.lock
+*.log
+package-lock.json
+
+.DS_Store
+.idea
+
+website/
+package.json
+.eslintrc
+yarn.lock
