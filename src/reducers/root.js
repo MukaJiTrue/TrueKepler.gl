@@ -20,14 +20,17 @@
 
 import {handleActions} from 'redux-actions';
 
-import {actionFor, updateProperty} from '../actions/action-wrapper';
+import {_actionFor, _updateProperty} from '../actions/action-wrapper';
 import {coreReducerFactory} from './core';
 
-import {
-  REGISTER_ENTRY,
-  DELETE_ENTRY,
-  RENAME_ENTRY
-} from '../actions/identity-actions';
+// import {
+//   REGISTER_ENTRY,
+//   DELETE_ENTRY,
+//   RENAME_ENTRY
+// } from '../actions/identity-actions';
+
+// Actions
+import ActionTypes from 'constants/action-types';
 
 import {keplerGlInit} from '../actions/actions';
 /*
@@ -72,16 +75,16 @@ export function provideInitialState(initialState) {
   return (state = initialCoreState, action) => {
     // update child states
     Object.keys(state).forEach(id => {
-      const updateItemState = coreReducer(state[id], actionFor(id, action));
-      state = updateProperty(state, id, updateItemState);
+      const updateItemState = coreReducer(state[id], _actionFor(id, action));
+      state = _updateProperty(state, id, updateItemState);
     });
 
     // perform additional state reducing (e.g. switch action.type etc...)
     return handleActions(
       {
-        [REGISTER_ENTRY]: handleRegisterEntry,
-        [DELETE_ENTRY]: handleDeleteEntry,
-        [RENAME_ENTRY]: handleRenameEntry
+        [ActionTypes.REGISTER_ENTRY]: handleRegisterEntry,
+        [ActionTypes.DELETE_ENTRY]: handleDeleteEntry,
+        [ActionTypes.RENAME_ENTRY]: handleRenameEntry
       },
       initialCoreState
     )(state, action);
@@ -119,10 +122,10 @@ function decorate(target, savedInitialState = {}) {
       // for each entry in the staten
       Object.keys(nextState).forEach(id => {
         // update child states
-        nextState = updateProperty(
+        nextState = _updateProperty(
           nextState,
           id,
-          customReducer(nextState[id], actionFor(id, action))
+          customReducer(nextState[id], _actionFor(id, action))
         );
       });
 

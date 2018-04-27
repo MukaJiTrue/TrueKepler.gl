@@ -21,26 +21,55 @@
 import {createAction} from 'redux-actions';
 import ActionTypes from 'constants/action-types';
 
-// second argument of createAction is expected
-// to be payloadCreator or undefined
-const [
-  togglePerspective,
-  fitBounds,
-  updateMap,
-  toggleSplitMap,
-  toggleFullScreen
-] = [
-  ActionTypes.TOGGLE_PERSPECTIVE,
-  ActionTypes.FIT_BOUNDS,
-  ActionTypes.UPDATE_MAP,
-  ActionTypes.TOGGLE_SPLIT_MAP,
-  ActionTypes.TOGGLE_FULLSCREEN
-].map(action => createAction(action));
+/**
+ *
+ * Toggle between 3d and 2d map.
+ * param {void}
+ * @public
+ */
+export const togglePerspective = createAction(
+  ActionTypes.TOGGLE_PERSPECTIVE
+);
 
-export {
-  updateMap,
-  fitBounds,
-  togglePerspective,
-  toggleSplitMap,
-  toggleFullScreen
-};
+/**
+ * Fit current map ti a new bounds
+ * param {Array} - bounds: `[lngMin, latMin, lngMax, latMax]`
+ * @public
+ * @example
+ *
+ * this.props.dispatch(fitBounds([-122.23, 37.127, -122.11, 37.456]))
+ */
+export const fitBounds =  createAction(
+  ActionTypes.FIT_BOUNDS,
+  bounds => bounds
+);
+
+/**
+ * Update map viewport
+ * @param {Object} viewport - viewport object container one or any of these properties `width`, `height`, `latitude` `longitude`, `zoom`, `pitch`, `bearing`, `dragRotate`
+ * @param {Number} viewport.width - Width of viewport
+ * @param {Number} viewport.height - Height of viewport
+ * @param {Number} viewport.zoom - Zoom of viewport
+ * @param {Number} viewport.pitch - Camera angle in degrees (0 is straight down)
+ * @param {Number} viewport.bearing - Map rotation in degrees (0 means north is up)
+ * @param {Number} viewport.latitude - Latitude center of viewport on map in mercator projection
+ * @param {Number} viewport.longitude - Longitude Center of viewport on map in mercator projection
+ * @param {Boolean} viewport.dragRotate - Whether to enable drag and rotate map into perspective viewport
+ * @public
+ * @example
+ *
+ * this.props.dispatch(updateMap({latitude: 37.75043, longitude: -122.34679, width: 800, height: 1200}))
+ */
+export const updateMap = createAction(
+  ActionTypes.UPDATE_MAP,
+  viewport => viewport
+);
+
+/**
+ * Toggle between one or split maps
+ * param {void}
+ * @public
+ */
+export const toggleSplitMap = createAction(
+  ActionTypes.TOGGLE_SPLIT_MAP
+);

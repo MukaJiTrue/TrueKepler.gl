@@ -26,6 +26,12 @@ export const updateMapUpdater = (state, action) => ({
   ...(action.payload || {})
 });
 
+/**
+ *
+ * @param state
+ * @param action
+ * @returns {{latitude, longitude, zoom}}
+ */
 export const fitBoundsUpdater = (state, action) => {
   const bounds = action.payload;
   const {center, zoom} = geoViewport.viewport(bounds, [

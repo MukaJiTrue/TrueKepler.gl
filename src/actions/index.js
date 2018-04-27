@@ -21,9 +21,16 @@
 // Actions
 export * from 'actions/actions';
 
+// kepler.gl actions accessible outside component
+export * from './vis-state-actions';
+export * from './ui-state-actions';
+export * from './map-state-actions';
+export * from './map-style-actions';
+export * from './identity-actions';
+
 // Dispatch
 export {
-  actionFor,
+  _actionFor,
   forwardTo,
   getActionForwardAddress,
   isForwardAction,
@@ -32,3 +39,32 @@ export {
 } from './action-wrapper';
 
 export {default as ActionTypes} from 'constants/action-types';
+
+import DeckGL, {ScatterplotLayer} from 'deck.gl';
+import React, {Component} from 'react';
+import ReactMapGL from 'react-map-gl';
+
+class MyMap extends Component {
+  render() {
+    const {viewport, points} = this.props;
+
+    const layers = [
+      new ScatterplotLayer({
+        id: 'scatterplot',
+        data: points,
+        getPosition: d => ([d.longitude, d.latitude]),
+        onHover: this._onHover
+      })
+    ];
+
+    <ReactMapGL
+     mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+     viewport={viewport}
+     onViewportChange={this._onViewportChange}>
+      <DeckGL
+        {...viewport}
+        layers={layers}/>
+    </ReactMapGL>
+  }
+}
+
