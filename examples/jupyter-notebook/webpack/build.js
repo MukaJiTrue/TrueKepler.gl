@@ -24,7 +24,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
-import webpackConfig from './config';
+const webpackConfig = require('./config')();
 
 const src = path.resolve(__dirname, '../src');
 
@@ -45,25 +45,27 @@ export default {
       test: /\.js$/,
       loader: 'babel-loader',
       include: src
-    }, {
-      test: /\.scss$/,
-      loader: ExtractTextPlugin.extract({
-        fallbackLoader: 'style-loader',
-        // TODO: need to add postcss to replace the autoprefix-loader that is deprecated
-        loader: 'css-loader!sass-loader'
-      }),
-      include: src
-    }]
+    },
+    // {
+    //   test: /\.scss$/,
+    //   loader: ExtractTextPlugin.extract({
+    //     fallbackLoader: 'style-loader',
+    //     // TODO: need to add postcss to replace the autoprefix-loader that is deprecated
+    //     loader: 'css-loader!sass-loader'
+    //   }),
+    //   include: src
+    // }
+    ]
   },
 
   plugins: [
 
     ...webpackConfig.plugins,
 
-    new ExtractTextPlugin({filename: 'styles-[hash].css'}),
+    // new ExtractTextPlugin({filename: 'styles-[hash].css'}),
 
-    new webpack.LoaderOptionsPlugin({minimize: true, debug: false}),
-    new webpack.optimize.UglifyJsPlugin({sourceMap: true, compressor: {comparisons: false, warnings: false}}),
+    // new webpack.LoaderOptionsPlugin({minimize: true, debug: false}),
+    // new webpack.optimize.UglifyJsPlugin({sourceMap: true, compressor: {comparisons: false, warnings: false}}),
 
     // new StatsWriterPlugin({
     //   fields: null,
@@ -79,18 +81,18 @@ export default {
         style: data.assetsByChunkName.main[1]
       })
     }),
-    new StatsWriterPlugin({
-      fields: null,
-      filename: 'manifest.json',
-      transform: data => JSON.stringify(data.assets.reduce((out, cur) => {
-        if (cur.name.startsWith('.')) {
-          return out;
-        }
-        return {
-          ...out, [cur.name]: `dist/${cur.name}`
-        };
-      }, {}))
-    }),
+    // new StatsWriterPlugin({
+    //   fields: null,
+    //   filename: 'manifest.json',
+    //   transform: data => JSON.stringify(data.assets.reduce((out, cur) => {
+    //     if (cur.name.startsWith('.')) {
+    //       return out;
+    //     }
+    //     return {
+    //       ...out, [cur.name]: `dist/${cur.name}`
+    //     };
+    //   }, {}))
+    // }),
 
     new ProgressBarPlugin()
   ],

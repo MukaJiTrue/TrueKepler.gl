@@ -26,7 +26,7 @@ import HtmlWebpackInlineSourcePlugin from 'html-webpack-inline-source-plugin';
 import HtmlWebpackExcludeAssetsPlugin from 'html-webpack-exclude-assets-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
-import {GA_TRACKING_ID} from '../src/shared/constants/default-settings';
+// import {GA_TRACKING_ID} from '../src/shared/constants/default-settings';
 
 import webpackConfig from './build';
 
@@ -36,9 +36,9 @@ const template = path.resolve(__dirname, '../template/workbench.ejs');
 export default {
   ...webpackConfig,
 
-  entry: {
-    main: ['./src/client/javascripts/main-jupyter']
-  },
+  // entry: {
+  //   main: ['./src/client/javascripts/main-jupyter']
+  // },
 
   output: {
     path: dist
@@ -48,12 +48,12 @@ export default {
   devtool: '',
 
   plugins: [
-    new ExtractTextPlugin({filename: 'styles.css'}),
+    // new ExtractTextPlugin({filename: 'styles.css'}),
     // new webpack.optimize.UglifyJsPlugin({compressor: {comparisons: false, warnings: false}}),
     new HtmlWebpackPlugin({
       template,
       appMountId: 'app-content',
-      filename: 'voyager.html',
+      filename: 'keplergl.html',
       inlineSource: '.(js|css)$',
       excludeAssets: [/style-*.css/],
       // googleAnalytics: {
@@ -62,9 +62,10 @@ export default {
       // },
       links: [
         'https://d1a3f4spazzrp4.cloudfront.net/uber-icons/3.14.0/uber-icons.css',
-        'https://d1a3f4spazzrp4.cloudfront.net/uber-fonts/4.0.0/superfine.css'
+        'https://d1a3f4spazzrp4.cloudfront.net/uber-fonts/4.0.0/superfine.css',
+        'https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css'
       ],
-      title: 'Voyager'
+      title: 'Kepler.gl'
     }),
     new HtmlWebpackExcludeAssetsPlugin(),
     new HtmlWebpackInlineSourcePlugin()

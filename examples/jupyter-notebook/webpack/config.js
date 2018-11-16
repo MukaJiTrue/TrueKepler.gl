@@ -25,23 +25,18 @@
 const resolve = require('path').resolve;
 const join = require('path').join;
 const webpack = require('webpack');
-const SRC = resolve(__dirname, '../src');
 
 const CONFIG = {
   // bundle app.js and everything it imports, recursively.
   entry: {
-    app: './src/main.js'
+    app: resolve('./src/main.js')
   },
 
   devtool: 'source-map',
 
   resolve: {
     // Make src files outside of this dir resolve modules in our node_modules folder
-    modules: [
-      resolve(__dirname, '../'),
-      resolve(__dirname, '../node_modules'),
-      'node_modules'
-    ]
+    modules: [resolve(__dirname, '.'), resolve(__dirname, 'node_modules'), 'node_modules']
   },
 
   module: {
@@ -49,7 +44,7 @@ const CONFIG = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: SRC,
+        include: join(__dirname, '../src'),
         exclude: [/node_modules/]
       },
       {
@@ -80,7 +75,6 @@ const CONFIG = {
     new webpack.EnvironmentPlugin(['MapboxAccessToken'])
   ]
 };
-
 
 // This line enables bundling against src in this repo rather than installed deck.gl module
 module.exports = env => {

@@ -35,7 +35,8 @@ const KeplerGl = require('kepler.gl/components').injectComponents([
   [ExportConfigModalFactory, CustomExportConfigModalFactory]
 ]);
 
-const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+// const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+const MAPBOX_TOKEN = 'pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pmc3hhd21uMzE3azJxczJhOWc4czBpYyJ9.HiDptGv2C0Bkcv_TGr_kJw'; // eslint-disable-line
 
 // Sample data
 import sampleData from './data/sample-data';
@@ -50,7 +51,7 @@ class App extends Component {
 
   componentDidMount() {
     // load sample msg for testing
-    this._receiveJupyterMsg();
+    // this._receiveJupyterMsg();
 
     window.addEventListener('message', this._msgHandler);
   }

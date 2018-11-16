@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "webpack-dev-server --progress --hot --open",
+    "build-workbench": "rm -rf dist-workbench && babel-node bin/build-workbench",
+    "start": "webpack-dev-server --config ./webpack/config.js --progress --hot --open",
     "start-local": "webpack-dev-server --env.es6 --progress --hot --open",
     "start-local-es5": "webpack-dev-server --env.local --progress --hot --open"
   },
