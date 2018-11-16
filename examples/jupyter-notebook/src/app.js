@@ -22,9 +22,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import window from 'global/window';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import {receivePostMessage} from './actions';
 
 import {replaceLoadDataModal} from './factories/map-config-modal';
-
+import {AddDataButtonFactory} from 'kepler.gl/components';
+console.log(AddDataButtonFactory)
 // const KeplerGl = require('kepler.gl/components').injectComponents([
 //   // replaceLoadDataModal()
 // ]);
@@ -34,7 +36,7 @@ const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
 
 // Sample data
 import sampleData from './data/sample-data';
-import config from './configurations/config.json';
+import sampleConfig from './configurations/config.json';
 
 /* eslint-disable no-unused-vars */
 import {updateVisData, addDataToMap} from 'kepler.gl/actions';
@@ -44,30 +46,27 @@ import Processors from 'kepler.gl/processors';
 class App extends Component {
 
   componentDidMount() {
-    // load sample data
-    // this._loadSampleData();
-    // this._receiveJupyterMsg();
-
-    // this.props.dispatch(this.receiveJupyterMsg());
+    // load sample msg for testing
+    this._receiveJupyterMsg();
 
     window.addEventListener('message', this._msgHandler);
   }
 
   _receiveJupyterMsg() {
-    const dataIds = savedConfig.datasets.map(ds => ds.data.id);
-
     const jupyterData = {
       data: [{
-        id: sampleData.info.id,
-        data: sampleData.data
-      }]
+        id: 'hex_data',
+        data: sampleData
+      }],
 
       // config is optional
-      // config: savedConfig.config.appConfig
+      config: sampleConfig
     };
+
+    this.props.dispatch(receivePostMessage(jupyterData));
   }
 
-  _msgHandler(e) {
+  _msgHandler = (e) => {
     // if jupyter is suppose to send a config or a data
     if (e.data.config || e.data.data) {
       this.props.dispatch(receivePostMessage(e.data));

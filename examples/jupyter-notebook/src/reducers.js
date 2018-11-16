@@ -24,6 +24,13 @@ import {handleActions} from 'redux-actions';
 import keplerGlReducer from 'kepler.gl/reducers';
 import Processor from 'kepler.gl/processors';
 
+const customizedKeplerGlReducer = keplerGlReducer
+  .initialState({
+    uiState: {
+      currentModal: null
+    }
+  })
+
 import {
   INIT
 } from './actions';
@@ -46,7 +53,7 @@ const appReducer = handleActions({
 // to mimic the reducer state of kepler.gl website
 const demoReducer = combineReducers({
   // mount keplerGl reducer
-  keplerGl: keplerGlReducer,
+  keplerGl: customizedKeplerGlReducer,
   app: appReducer
 });
 
