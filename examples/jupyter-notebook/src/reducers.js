@@ -22,7 +22,6 @@ import {combineReducers} from 'redux';
 import {handleActions} from 'redux-actions';
 
 import keplerGlReducer from 'kepler.gl/reducers';
-import Processor from 'kepler.gl/processors';
 
 const customizedKeplerGlReducer = keplerGlReducer
   .initialState({
@@ -57,16 +56,5 @@ const demoReducer = combineReducers({
   app: appReducer
 });
 
-const composedUpdaters = {
-  // [LOAD_REMOTE_FILE_DATA_SUCCESS]: loadRemoteFileDataSuccess
-};
-
-const composedReducer = (state, action) => {
-  if (composedUpdaters[action.type]) {
-    return composedUpdaters[action.type](state, action);
-  }
-  return demoReducer(state, action);
-};
-
 // export demoReducer to be combined in website app
-export default composedReducer;
+export default demoReducer;

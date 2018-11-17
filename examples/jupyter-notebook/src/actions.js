@@ -18,7 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {toggleModal} from 'kepler.gl/actions';
 import {console as Console} from 'global/window';
 import KeplerGlSchema from 'kepler.gl/schemas';
 import {updateVisData, receiveMapConfig} from 'kepler.gl/actions';
@@ -84,17 +83,17 @@ export function receivePostMessage(e) {
     }
 
     if (!data.every(d => d.id)) {
-      alert('Each data entry should have an unique id that matches dataId in layer/filter');
+      Console.alert('Each data entry should have an unique id that matches dataId in layer/filter');
       return;
     }
 
     if (config && !config.version) {
-      alert('Config should have a valid version');
+      Console.alert('Config should have a valid version');
       return;
     }
 
     if (config && !config.version === KeplerGlSchema._version) {
-      alert('This config is saved in an older version, voyager currently support it, to avoid future issues, ' +
+      Console.alert('This config is saved in an older version, voyager currently support it, to avoid future issues, ' +
         'please save it again by clicking the copy config button');
     }
 
@@ -117,7 +116,7 @@ export function receivePostMessage(e) {
         return;
       })
       .catch(error => {
-        console.warn(error);
+        Console.warn(error);
       })
 
   }

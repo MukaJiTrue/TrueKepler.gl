@@ -24,9 +24,6 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import HtmlWebpackInlineSourcePlugin from 'html-webpack-inline-source-plugin';
 import HtmlWebpackExcludeAssetsPlugin from 'html-webpack-exclude-assets-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-
-// import {GA_TRACKING_ID} from '../src/shared/constants/default-settings';
 
 import webpackConfig from './build';
 
@@ -36,10 +33,6 @@ const template = path.resolve(__dirname, '../template/workbench.ejs');
 export default {
   ...webpackConfig,
 
-  // entry: {
-  //   main: ['./src/client/javascripts/main-jupyter']
-  // },
-
   output: {
     path: dist
   },
@@ -48,18 +41,14 @@ export default {
   devtool: '',
 
   plugins: [
-    // new ExtractTextPlugin({filename: 'styles.css'}),
-    // new webpack.optimize.UglifyJsPlugin({compressor: {comparisons: false, warnings: false}}),
+    ...webpackConfig.plugins,
+
     new HtmlWebpackPlugin({
       template,
       appMountId: 'app-content',
       filename: 'keplergl.html',
       inlineSource: '.(js|css)$',
       excludeAssets: [/style-*.css/],
-      // googleAnalytics: {
-      //   trackingId: GA_TRACKING_ID,
-      //   pageViewOnLoad: true
-      // },
       links: [
         'https://d1a3f4spazzrp4.cloudfront.net/uber-icons/3.14.0/uber-icons.css',
         'https://d1a3f4spazzrp4.cloudfront.net/uber-fonts/4.0.0/superfine.css',

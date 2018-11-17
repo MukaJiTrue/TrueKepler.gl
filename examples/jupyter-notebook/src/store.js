@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 
 import thunk from 'redux-thunk';
 import window from 'global/window';
@@ -30,7 +30,7 @@ const reducers = demoReducer
 
 export const middlewares = [
   taskMiddleware,
-  thunk,
+  thunk
 ];
 
 export const enhancers = [applyMiddleware(...middlewares)];

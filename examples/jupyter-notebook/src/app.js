@@ -20,43 +20,66 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 import window from 'global/window';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import {receivePostMessage} from './actions';
 
-import {replaceLoadDataModal} from './factories/map-config-modal';
-import {AddDataButtonFactory, ExportConfigModalFactory} from 'kepler.gl/components';
+import {AddDataButtonFactory, ExportConfigModalFactory, PanelHeaderFactory} from 'kepler.gl/components';
 
 import ExportConfigButtonFactory from './components/export-config-button';
 import CustomExportConfigModalFactory from './components/export-config-modal';
+import CustomPanelHeaderFactory from './components/panel-header';
 
 const KeplerGl = require('kepler.gl/components').injectComponents([
   [AddDataButtonFactory, ExportConfigButtonFactory],
-  [ExportConfigModalFactory, CustomExportConfigModalFactory]
+  [ExportConfigModalFactory, CustomExportConfigModalFactory],
+  [PanelHeaderFactory, CustomPanelHeaderFactory]
 ]);
 
-// const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
-const MAPBOX_TOKEN = 'pk.eyJ1IjoidWJlcmRhdGEiLCJhIjoiY2pmc3hhd21uMzE3azJxczJhOWc4czBpYyJ9.HiDptGv2C0Bkcv_TGr_kJw'; // eslint-disable-line
+const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
 
 // Sample data
 import sampleData from './data/sample-data';
 import sampleConfig from './configurations/config.json';
+import keplerglJson from './data/keplergl.json';
 
 /* eslint-disable no-unused-vars */
-import {updateVisData, addDataToMap} from 'kepler.gl/actions';
+import {addDataToMap, resetMapConfig} from 'kepler.gl/actions';
 import Processors from 'kepler.gl/processors';
 /* eslint-enable no-unused-vars */
+
+const GlobalStyleDiv = styled.div`
+  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 0.875em;
+  line-height: 1.71429;
+
+  *,
+  *:before,
+  *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+`;
 
 class App extends Component {
 
   componentDidMount() {
     // load sample msg for testing
-    // this._receiveJupyterMsg();
-
+    // this._testReceiveJupyterMsg();
+    // this._receiveKeplerglJson(keplerglJson);
+    // window.setTimeout(this._testClearJupyterMsg, 2000);
     window.addEventListener('message', this._msgHandler);
   }
 
-  _receiveJupyterMsg() {
+  _receiveKeplerglJson(keplerJson) {
+    const data = Processors.processKeplerglJSON(keplerJson);
+    this.props.dispatch(addDataToMap(data));
+  }
+
+  _testReceiveJupyterMsg = () => {
     const jupyterData = {
       data: [{
         id: 'hex_data',
@@ -70,10 +93,22 @@ class App extends Component {
     this.props.dispatch(receivePostMessage(jupyterData));
   }
 
+  _testClearJupyterMsg = () => {
+    this._msgHandler({
+      data: {clear: true}
+    })
+  }
+
   _msgHandler = (e) => {
     // if jupyter is suppose to send a config or a data
+    if (e.data.clear) {
+      this.props.dispatch(resetMapConfig());
+    }
+
     if (e.data.config || e.data.data) {
       this.props.dispatch(receivePostMessage(e.data));
+    } else if (e.data.map) {
+      this._receiveKeplerglJson(e.data.map);
     }
   }
 
@@ -84,18 +119,21 @@ class App extends Component {
 
   render() {
     return (
-      <div style={{position: 'absolute', width: '100%', height: '100%'}}>
-        <AutoSizer>
-          {({height, width}) => (
-            <KeplerGl
-              mapboxApiAccessToken={MAPBOX_TOKEN}
-              id="map"
-              width={width}
-              height={height}
-            />
-          )}
-        </AutoSizer>
-      </div>
+      <GlobalStyleDiv>
+        <div style={{position: 'absolute', width: '100%', height: '100%'}}>
+          <AutoSizer>
+            {({height, width}) => (
+              <KeplerGl
+                mapboxApiAccessToken={MAPBOX_TOKEN}
+                width={width}
+                height={height}
+                appName="Jupyter Voyager"
+                version="1.0.4"
+              />
+            )}
+          </AutoSizer>
+        </div>
+      </GlobalStyleDiv>
     );
   }
 }

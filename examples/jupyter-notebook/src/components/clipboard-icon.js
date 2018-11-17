@@ -21,7 +21,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {Icons} from 'kepler.gl/components';
-console.log(Icons)
+
 export default class ClipboardIcon extends Component {
   static propTypes = {
     /** Set the height of the icon, ex. '16px' */

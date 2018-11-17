@@ -19,8 +19,6 @@
 // THE SOFTWARE.
 
 import webpack from 'webpack';
-import {StatsWriterPlugin} from 'webpack-stats-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import path from 'path';
 
@@ -45,16 +43,7 @@ export default {
       test: /\.js$/,
       loader: 'babel-loader',
       include: src
-    },
-    // {
-    //   test: /\.scss$/,
-    //   loader: ExtractTextPlugin.extract({
-    //     fallbackLoader: 'style-loader',
-    //     // TODO: need to add postcss to replace the autoprefix-loader that is deprecated
-    //     loader: 'css-loader!sass-loader'
-    //   }),
-    //   include: src
-    // }
+    }
     ]
   },
 
@@ -62,38 +51,8 @@ export default {
 
     ...webpackConfig.plugins,
 
-    // new ExtractTextPlugin({filename: 'styles-[hash].css'}),
-
-    // new webpack.LoaderOptionsPlugin({minimize: true, debug: false}),
-    // new webpack.optimize.UglifyJsPlugin({sourceMap: true, compressor: {comparisons: false, warnings: false}}),
-
-    // new StatsWriterPlugin({
-    //   fields: null,
-    //   transform: (data, opts) => {
-    //     const stats = opts.compiler.getStats().toJson({ chunkModules: true });
-    //     return JSON.stringify(stats, null, 2);
-    //   },
-    // }),
-    new StatsWriterPlugin({
-      filename: 'files.json',
-      transform: data => JSON.stringify({
-        main: data.assetsByChunkName.main[0],
-        style: data.assetsByChunkName.main[1]
-      })
-    }),
-    // new StatsWriterPlugin({
-    //   fields: null,
-    //   filename: 'manifest.json',
-    //   transform: data => JSON.stringify(data.assets.reduce((out, cur) => {
-    //     if (cur.name.startsWith('.')) {
-    //       return out;
-    //     }
-    //     return {
-    //       ...out, [cur.name]: `dist/${cur.name}`
-    //     };
-    //   }, {}))
-    // }),
-
+    new webpack.LoaderOptionsPlugin({minimize: true, debug: false}),
+    new webpack.optimize.UglifyJsPlugin({sourceMap: true, compressor: {comparisons: false, warnings: false}}),
     new ProgressBarPlugin()
   ],
 

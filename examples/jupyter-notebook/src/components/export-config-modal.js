@@ -20,7 +20,6 @@
 
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import JSONPretty from 'react-json-pretty';
 import Clipboard from 'clipboard';
 import {Button, StyledModalContent} from 'kepler.gl/components';
 import ClipboardIcon from './clipboard-icon';
@@ -28,9 +27,9 @@ import CheckIcon from './check-icon';
 
 // string to replace between js object and python dict
 const Params = {
-  'true': 'True',
-  'false': 'False',
-  'null': 'None'
+  true: 'True',
+  false: 'False',
+  null: 'None'
 };
 
 const StyledExportConfigSection = styled.div`
@@ -38,25 +37,6 @@ const StyledExportConfigSection = styled.div`
   flex-direction: row;
   margin: 24px 0;
   width: 100%;
-
-  /* .description {
-    width: 185px;
-
-    .title {
-      font-weight: 500;
-      color: ${props => props.theme.textColorLT};
-      font-size: 12px;
-    }
-    .subtitle {
-      color: ${props => props.theme.textColor};
-      font-size: 11px;
-    }
-
-    .note {
-      color: ${props => props.theme.errorColor};
-      font-size: 11px;
-    }
-  } */
 
   .selection {
     flex-grow: 1;
@@ -112,7 +92,6 @@ function ExportConfigModalFactory() {
     }
 
     render() {
-      const {data, config} = this.props;
       const {isCopied} = this.state;
       return (
         <div className="export-config-modal">

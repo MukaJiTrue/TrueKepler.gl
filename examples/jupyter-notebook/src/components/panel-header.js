@@ -18,25 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import {LoadDataModalFactory} from 'kepler.gl/components';
-import MapConfigModal from '../components/map-config-modal';
-import {withState} from 'kepler.gl/components';
+import {PanelHeaderFactory, Icons} from 'kepler.gl/components';
 
-// import {
-//   loadSampleMap,
-//   setLoadingMethod
-// } from '../actions';
+// TODO: Move the doc to public repo
+const KEPLER_DOC = 'https://code.uberinternal.com/w/repo/vis/voyager/jupyter/';
 
-export const CustomLoadDataModalFactory = () =>
-  withState(
-    [],
-    state => ({...state.app}),
-    {
-      // onSetLoadingMethod: setLoadingMethod,
-      // onLoadSampleData: loadSampleMap
-    }
-  )(MapConfigModal);
+export function CustomPanelHeaderFactory() {
+  const PanelHeader = PanelHeaderFactory();
 
-export function replaceLoadDataModal() {
-  return [LoadDataModalFactory, CustomLoadDataModalFactory];
+  PanelHeader.defaultProps = {
+    ...PanelHeader.defaultProps,
+    actionItems: [
+      {
+        id: 'docs',
+        label: 'Docs',
+        iconComponent: Icons.Docs,
+        href: KEPLER_DOC,
+        blank: true,
+        tooltip: 'Documentation',
+        onClick: () => {}
+      }
+    ]
+  };
+  return PanelHeader;
 }
+
+export default CustomPanelHeaderFactory;

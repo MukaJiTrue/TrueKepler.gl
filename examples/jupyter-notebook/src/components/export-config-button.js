@@ -20,14 +20,11 @@
 
 import React from 'react';
 import {Icons, Button, withState} from 'kepler.gl/components';
+import {toggleModal} from 'kepler.gl/actions';
 
-import {
-  toggleModal
-} from 'kepler.gl/actions';
-
-const ExportConfigButton = ({toggleModal}) => (
+const ExportConfigButton = (props) => (
   <Button
-    onClick={() => toggleModal('exportConfig')}
+    onClick={() => props.toggleModal('exportConfig')}
     width="105px"
     secondary
   >
@@ -38,10 +35,8 @@ const ExportConfigButton = ({toggleModal}) => (
 const ExportConfigButtonFactory = () =>
   withState(
     [],
-    state => ({...state.app}),
-    {
-      toggleModal: toggleModal
-    }
+    state => state,
+    {toggleModal}
   )(ExportConfigButton);
 
 export default ExportConfigButtonFactory;
